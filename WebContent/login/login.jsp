@@ -13,9 +13,38 @@
      function openFindPw(){
     	 window.open("<%=request.getContextPath()%>/login/findPw.jsp","findPw","width=600, height=400");
      }
+     function loginCheck(){
+    	 if(f.id.value==""){ 
+         	 alert("아이디를 입력해 주세요!!")
+    	     return
+    	 }
+    	 if(!f.passwd.value){
+    		 alert("비밀번호를 입력해 주세요!!")
+    		 return
+    	 }
+    	 
+    	 document.f.submit();
+     }
+     
   </script>
+  
+  <%
+    String cname = null , cvalue = null;
+    Cookie cks[] = request.getCookies();
+    if(cks != null || cks.length != 0){
+    	for(int i = 0 ; i < cks.length ; i++){
+    		cname = cks[i].getName();
+    		if(cname.equals("saveId")){
+    			cvalue = cks[i].getValue();
+    			break;
+    		}
+    	}
+    }
+    
+  %>
 <br>
 
+	   
 
 <img src="../img/bottom.gif" width=570 height="40" border="0" alt="">
 <br>
@@ -28,19 +57,29 @@
 		<tr>
 			<td align="right" width="30%"><img src="../img/id01.gif" width="28"
 				height="11" border="0" alt="아이디">&nbsp;&nbsp;</td>
-			<td width="40%"><input type="text" name="id" tabindex="1">
+			<td width="40%">
+			<%if(cvalue == null) {%>
+			<input type="text" name="id" tabindex="1" required="required">
+			<%}else{ %>
+			 <input type="text" name="id" tabindex="1" value="<%=cvalue %>" required="required">
+			<%} %>
 			</td>
 			<td rowspan="2" width="30%" valign="middle"><a
 				href="javascript:loginCheck()"> <img src="../img/bt_login.gif"
 					border="0" alt="로그인" tabindex="3">&nbsp;&nbsp;<br>
 			</a> <nobr>
-					<input type="checkbox" name="saveId"> <font face="굴림"
+			<% if (cvalue == null){ %>
+					<input type="checkbox" name="saveId"> 
+			<%} else { %>
+				    <input type="checkbox" name="saveId" checked="checked"> 
+			<%} %>
+					<font face="굴림"
 						size="2">아이디 기억하기</font>
 				</nobr></td>
 		</tr>
 		<tr>
 			<td align="right"><img src="img/pwd.gif" width="37" height="11"
-				alt="비밀번호"></td>
+				alt="비밀번호" required="required"></td>
 			<td><input type="password" name="passwd" tabindex="2"></td>
 		</tr>
 		<tr>
@@ -52,4 +91,5 @@
 		</tr>
 	</table>
 </form>
+
 <%@ include file="../bottom.jsp"%>

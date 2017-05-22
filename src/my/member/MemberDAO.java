@@ -25,6 +25,28 @@ public class MemberDAO {
 	public MemberDAO() {
 
 	}
+	
+	public MemberDTO loginMember(MemberDTO dto) throws SQLException{
+		String sql = "select * from jsp_member where id = ? and password = ?";
+		con = pool.getConnection();
+		System.out.println(dto);
+		try{
+			ps = con.prepareStatement(sql);
+			ps.setString(1, dto.getId());
+			ps.setString(2, dto.getPasswd());
+			rs = ps.executeQuery();
+			List<MemberDTO> list = makeList(rs);
+			if(list != null && !list.isEmpty()){
+				return list.get(0);
+			}else{
+				return null;
+			}
+		}finally{
+			if(rs != null)rs.close();
+			if(ps != null)ps.close();
+			if(con != null)pool.returnConnection(con);
+		}
+	}
 
 	public boolean checkMember(String name, String ssn1, String ssn2) throws SQLException {
 		String sql = "select * from jsp_member where name = ? and ssn1 = ? and ssn2 = ?";
