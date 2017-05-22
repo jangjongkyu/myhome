@@ -36,8 +36,8 @@
 		   ck.setMaxAge(12*60*60);
 	   }else{
 		   ck.setMaxAge(0);
-		   response.addCookie(ck);
 	   }
+		   response.addCookie(ck);
 	   
   	   session.setAttribute("mbId", loginOK.getId());
 	   session.setAttribute("mbName", login.getName());
